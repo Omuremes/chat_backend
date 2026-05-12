@@ -24,10 +24,10 @@ def create_app() -> FastAPI:
 
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings.cors_origin_list,
+        allow_origins=["https://chat-frontend-cyan-five.vercel.app", "http://localhost:3000"],
         allow_credentials=True,
         allow_methods=["*"],
-        allow_headers=["https://chat-frontend-cyan-five.vercel.app"],
+        allow_headers=["*"],
     )
 
     app.include_router(api_router)
