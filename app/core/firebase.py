@@ -1,4 +1,5 @@
 import json
+import logging
 
 import firebase_admin
 from fastapi import HTTPException, status
@@ -6,6 +7,8 @@ from firebase_admin import auth, credentials
 from firebase_admin.auth import GetUsersResult, UserRecord
 
 from app.core.config import get_settings
+
+logger = logging.getLogger(__name__)
 
 
 def _build_credentials() -> credentials.Certificate:
@@ -47,6 +50,7 @@ def verify_firebase_token(token: str) -> dict:
         _initialize_firebase()
         return auth.verify_id_token(token)
     except Exception as exc:
+        logger.error(f"Firebase token verification failed: {exc}", exc_info=True)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or expired Firebase token",
